@@ -15,17 +15,16 @@ import java.util.Optional;
  * Project Model Class Controller
  */
 @RestController
-@RequestMapping(value = "/api/project")
 public class ProjectController {
 	@Autowired
 	private ProjectRepository projectRepository;
 
 	/**
-	 *
+	 * 프로젝트 정보 등록
 	 * @param project
 	 * @return
 	 */
-	@PostMapping
+	@PostMapping("/api/project")
 	public ResponseEntity<Object> createProject(@RequestBody Project project) {
 		Project savedProject = projectRepository.save(project);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -34,12 +33,12 @@ public class ProjectController {
 		return ResponseEntity.created(location).build();
 	}
 
-	@GetMapping
+	@GetMapping("/api/projects")
 	public List<Project> getProjects() {
 		return projectRepository.findAll();
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping("/api/project/{id}")
 	public Project getProject(@PathVariable Long id) throws Exception {
 		Optional<Project> project = projectRepository.findById(id);
 		if (!project.isPresent())
@@ -47,7 +46,7 @@ public class ProjectController {
 		return project.get();
 	}
 
-	@PutMapping(value = "/{id}")
+	@PutMapping("/api/project/{id}")
 	public ResponseEntity<Object> updateProject(@RequestBody Project project, @PathVariable Long id) {
 		Optional<Project> projectOptional =  projectRepository.findById(id);
 
